@@ -4,7 +4,7 @@ Small test repository for catd development pipelines. A pipeline clones it, work
 
 ## Funktionen
 
-- `greet(name)` returns the greeting `Hallo <name>`.
+- `greet(name, now = new Date())` returns a greeting by the local hour of `now`: 05–11 `Guten Morgen <name>`, 12–17 `Hallo <name>`, 18–04 `Guten Abend <name>`. Without `now` it uses the current time. An invalid `now` throws a `TypeError`.
 - `farewell(name)` returns the goodbye `Tschüss <name>`.
 
 ## Run the tests
