@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { greet, farewell } from '../src/greet.js';
+import { greet, shout, farewell } from '../src/greet.js';
 
 test('greet returns a greeting with the name', () => {
   assert.equal(greet('Pid', new Date(2026, 0, 15, 14, 0)), 'Hallo Pid');
@@ -38,4 +38,31 @@ test('greet rejects an invalid time', () => {
 
 test('farewell returns a goodbye with the name', () => {
   assert.equal(farewell('Pid'), 'Tschüss Pid');
+});
+
+test('shout returns the greeting in capitals with an exclamation mark', () => {
+  assert.equal(shout('Pid', new Date(2026, 0, 15, 8, 0)), 'GUTEN MORGEN PID!');
+  assert.equal(shout('Pid', new Date(2026, 0, 15, 14, 0)), 'HALLO PID!');
+  assert.equal(shout('Pid', new Date(2026, 0, 15, 20, 0)), 'GUTEN ABEND PID!');
+});
+
+test('shout without a time uses the current time', () => {
+  assert.match(shout('Pid'), /^(GUTEN MORGEN|HALLO|GUTEN ABEND) PID!$/);
+});
+
+test('shout adds no second exclamation mark', () => {
+  assert.equal(shout('Pid!', new Date(2026, 0, 15, 14, 0)), 'HALLO PID!');
+  assert.equal(shout('Pid!!', new Date(2026, 0, 15, 14, 0)), 'HALLO PID!!');
+});
+
+test('shout uppercases ß as SS', () => {
+  assert.equal(shout('Gauß', new Date(2026, 0, 15, 14, 0)), 'HALLO GAUSS!');
+});
+
+test('shout rejects an invalid time', () => {
+  const error = { name: 'TypeError', message: 'now must be a valid Date' };
+  assert.throws(() => shout('Pid', new Date('x')), error);
+  assert.throws(() => shout('Pid', '08:00'), error);
+  assert.throws(() => shout('Pid', 8), error);
+  assert.throws(() => shout('Pid', null), error);
 });
