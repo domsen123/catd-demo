@@ -8,6 +8,11 @@ export function greet(name, now = new Date()) {
   return `Guten Abend ${name}`;
 }
 
+export function shout(name, now = new Date()) {
+  const loud = greet(name, now).toUpperCase();
+  return loud.endsWith('!') ? loud : `${loud}!`;
+}
+
 export function farewell(name) {
   return `Tschüss ${name}`;
 }
